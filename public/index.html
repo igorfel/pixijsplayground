@@ -1,0 +1,19 @@
+<html>
+
+<head>
+  <title>PixiJS Playground</title>
+</head>
+<script src="./src/engine/pixi.min.js"></script>
+
+<body>
+  <script type="text/javascript">
+    let type = "WebGL"
+    if (!PIXI.utils.isWebGLSupported()) {
+      type = "canvas"
+    }
+
+    PIXI.utils.sayHello(type)
+  </script>
+</body>
+
+</html>
