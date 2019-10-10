@@ -24,6 +24,16 @@ debug@^3.0.0:
   dependencies:
     ms "^2.1.1"
 
+ecstatic@2.2.2:
+  version "2.2.2"
+  resolved "https://registry.npmjs.org/ecstatic/-/ecstatic-2.2.2.tgz#1c7969b7a8893a04852e9373edeeb1d62809d393"
+  integrity sha512-F1g29y3I+abOS+M0AiK2O9R96AJ49Bc3kH696HtqnN+CL3YhpUnSzHNoUBQL03qDsN9Lr1XeKIxTqEH3BtiBgg==
+  dependencies:
+    he "^1.1.1"
+    mime "^1.2.11"
+    minimist "^1.1.0"
+    url-join "^2.0.2"
+
 ecstatic@^1.4.0:
   version "1.4.1"
   resolved "https://registry.npmjs.org/ecstatic/-/ecstatic-1.4.1.tgz#32cb7b6fa2e290d58668674d115e8f0c3d567d6a"
@@ -50,6 +60,11 @@ he@^0.5.0:
   version "0.5.0"
   resolved "https://registry.npmjs.org/he/-/he-0.5.0.tgz#2c05ffaef90b68e860f3fd2b54ef580989277ee2"
   integrity sha1-LAX/rvkLaOhg8/0rVO9YCYknfuI=
+
+he@^1.1.1:
+  version "1.2.0"
+  resolved "https://registry.npmjs.org/he/-/he-1.2.0.tgz#84ae65fa7eafb165fddb61566ae14baf05664f0f"
+  integrity sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==
 
 http-proxy@^1.8.1:
   version "1.18.0"
@@ -148,6 +163,11 @@ url-join@^1.0.0:
   version "1.1.0"
   resolved "https://registry.npmjs.org/url-join/-/url-join-1.1.0.tgz#741c6c2f4596c4830d6718460920d0c92202dc78"
   integrity sha1-dBxsL0WWxIMNZxhGCSDQySIC3Hg=
+
+url-join@^2.0.2:
+  version "2.0.5"
+  resolved "https://registry.npmjs.org/url-join/-/url-join-2.0.5.tgz#5af22f18c052a000a48d7b82c5e9c2e2feeda728"
+  integrity sha1-WvIvGMBSoACkjXuCxenC4v7tpyg=
 
 wordwrap@~0.0.2:
   version "0.0.3"
