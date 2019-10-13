@@ -19,7 +19,8 @@ let controller = {
   up: Keyboard("ArrowUp"),
   right: Keyboard("ArrowRight"),
   down: Keyboard("ArrowDown"),
-  left: Keyboard("ArrowLeft")
+  left: Keyboard("ArrowLeft"),
+  handbrake: Keyboard(" ")
 }
 let car_engine = {
   topSpeed: 5,
@@ -76,6 +77,14 @@ function setupController() {
   controller.left.release = () => {
     car_steering.turningLeft = false
   }
+
+  controller.handbrake.press = () => {
+    car_engine.handbraking = true
+  }
+
+  controller.handbrake.release = () => {
+    car_engine.handbraking = false
+  }
 }
 
 function start() {
@@ -100,8 +109,9 @@ function update(delta) {
 }
 
 function play(delta) {
-  car.x += car.vx * Math.cos(car.rotation) * delta
-  car.y += car.vy * Math.sin(car.rotation) * delta
+  const rot = car.rotation
+  car.x += car.vx * Math.cos(rot) * delta
+  car.y += car.vy * Math.sin(rot) * delta
 
   loopPosition(car, app.renderer.screen)
   carEngineAccelerate(car_engine.accelerate && !car_engine.braking)
@@ -119,7 +129,7 @@ function loopPosition(car, screen) {
   if (car.x > screen.width + car.width) car.x = 0
   if (car.y > screen.height + car.height) car.y = 0
   if (car.x < 0 - car.width) car.x = screen.width
-  if (car.y < 0 - car.height) car.x = screen.height
+  if (car.y < 0 - car.height) car.y = screen.height
 }
 
 function carEngineAccelerate(accelerate) {
@@ -152,9 +162,20 @@ function carEngineReverse(accelerate) {
 }
 
 function turnRight(canTurn) {
-  if (canTurn) car.rotation += car_steering.handling * car.vx * car.vy
+  const handling = car_steering.handling / 3
+
+  if (canTurn && car.vx + car.vy > 0) car.rotation += handling * car.vx * car.vy
+  if (canTurn && car.vx + car.vy < 0)
+    car.rotation -= handling * 3 * car.vx * car.vy
 }
 
 function turnLeft(canTurn) {
-  if (canTurn) car.rotation -= car_steering.handling * car.vx * car.vy
+  const handling = car_steering.handling / 3
+  if (canTurn && car.vx + car.vy > 0) car.rotation -= handling * car.vx * car.vy
+  if (canTurn && car.vx + car.vy < 0)
+    car.rotation += handling * 3 * car.vx * car.vy
+}
+
+function ifHandbrakingAddsValue(car) {
+  return car.handbraking ? 0.5 : 0
 }
