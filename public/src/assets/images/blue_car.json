@@ -1,0 +1,44 @@
+{"frames": {
+
+"blue_car_breaks.png":
+{
+	"frame": {"x":0,"y":0,"w":514,"h":266},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":514,"h":266},
+	"sourceSize": {"w":514,"h":266}
+},
+"blue_car_breaks_light.png":
+{
+	"frame": {"x":0,"y":266,"w":514,"h":266},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":514,"h":266},
+	"sourceSize": {"w":514,"h":266}
+},
+"blue_car_idle.png":
+{
+	"frame": {"x":0,"y":532,"w":514,"h":266},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":514,"h":266},
+	"sourceSize": {"w":514,"h":266}
+},
+"blue_car_light.png":
+{
+	"frame": {"x":0,"y":798,"w":514,"h":266},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":514,"h":266},
+	"sourceSize": {"w":514,"h":266}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "blue_car.png",
+	"format": "RGBA8888",
+	"size": {"w":514,"h":1064},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:bd5d51a8703aad1eb1c4d299be13618c:7eeb996d234249d65ad7b41a5f71624b:a9424385855c96baecb56cef742e7eac$"
+}
+}
