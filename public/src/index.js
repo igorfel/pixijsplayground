@@ -100,8 +100,8 @@ function update(delta) {
 }
 
 function play(delta) {
-  car.x += car.vx * delta
-  car.y += car.vy * delta
+  car.x += car.vx * Math.cos(car.rotation) * delta
+  car.y += car.vy * Math.sin(car.rotation) * delta
 
   loopPosition(car, app.renderer.screen)
   carEngineAccelerate(car_engine.accelerate && !car_engine.braking)
@@ -123,8 +123,10 @@ function loopPosition(car, screen) {
 }
 
 function carEngineAccelerate(accelerate) {
-  if (accelerate)
+  if (accelerate) {
     if (car.vx < car_engine.topSpeed) car.vx += car_engine.acceleration
+    if (car.vy < car_engine.topSpeed) car.vy += car_engine.acceleration
+  }
 }
 
 function carEngineDecelerate(decelerate, braking) {
@@ -135,18 +137,24 @@ function carEngineDecelerate(decelerate, braking) {
     if (car.vx > 0.1) car.vx -= brakingForce
     else if (car.vx < -0.051) car.vx += brakingForce
     else car.vx = 0
+
+    if (car.vy > 0.1) car.vy -= brakingForce
+    else if (car.vy < -0.051) car.vy += brakingForce
+    else car.vy = 0
   }
 }
 
 function carEngineReverse(accelerate) {
-  if (accelerate)
+  if (accelerate) {
     if (car.vx > -car_engine.reverse) car.vx -= car_engine.acceleration
+    if (car.vy > -car_engine.reverse) car.vy -= car_engine.acceleration
+  }
 }
 
 function turnRight(canTurn) {
-  if (canTurn) car.rotation += car_steering.handling * car.vx
+  if (canTurn) car.rotation += car_steering.handling * car.vx * car.vy
 }
 
 function turnLeft(canTurn) {
-  if (canTurn) car.rotation -= car_steering.handling * car.vx
+  if (canTurn) car.rotation -= car_steering.handling * car.vx * car.vy
 }
