@@ -114,7 +114,9 @@ function update(delta) {
 }
 
 function play(delta) {
-  const rot = car.rotation * ifHandbraking(car_engine)
+  if (car.rotation > Math.PI * 2 || car.rotation < -Math.PI * 2)
+    car.rotation = 0
+  const rot = car.rotation + ifHandbraking(car_engine)
   console.log(
     car_engine.handbraking,
     car.rotation,
@@ -128,7 +130,7 @@ function play(delta) {
   carEngineDecelerate(!car_engine.accelerate, car_engine.braking)
   carEngineReverse(car.vx <= 0 && car_engine.braking)
 
-  if (car.vx != 0) {
+  if (car.vx != 0 && car.vy != 0) {
     turnRight(car_steering.turningRight)
     turnLeft(car_steering.turningLeft)
   }
@@ -194,5 +196,5 @@ function turnLeft(canTurn) {
 }
 
 function ifHandbraking(car) {
-  return car.handbraking ? 0.99 : 1
+  return car.handbraking ? 0.9 : 0
 }
