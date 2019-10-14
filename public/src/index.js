@@ -43,6 +43,7 @@ app.loader.add(car_sprite_path).load(start)
 
 function setupController() {
   controller.up.press = () => {
+    changeCarTexture(car_actions.lights)
     car_engine.accelerate = true
   }
 
@@ -87,6 +88,10 @@ function setupController() {
   }
 }
 
+function changeCarTexture(newTexture) {
+  car.texture = PIXI.Texture.from(newTexture)
+}
+
 function start() {
   car = PIXI.Sprite.from(car_actions.lights)
   car.scale.set(0.1, 0.1)
@@ -109,7 +114,12 @@ function update(delta) {
 }
 
 function play(delta) {
-  const rot = car.rotation
+  const rot = car.rotation * ifHandbraking(car_engine)
+  console.log(
+    car_engine.handbraking,
+    car.rotation,
+    car.rotation * ifHandbraking(car_engine)
+  )
   car.x += car.vx * Math.cos(rot) * delta
   car.y += car.vy * Math.sin(rot) * delta
 
@@ -144,6 +154,8 @@ function carEngineDecelerate(decelerate, braking) {
     ? car_engine.deceleration + car_engine.brakeForce
     : car_engine.deceleration
   if (decelerate) {
+    changeCarTexture(car_actions.break_lights)
+
     if (car.vx > 0.1) car.vx -= brakingForce
     else if (car.vx < -0.051) car.vx += brakingForce
     else car.vx = 0
@@ -162,20 +174,25 @@ function carEngineReverse(accelerate) {
 }
 
 function turnRight(canTurn) {
-  const handling = car_steering.handling / 3
+  if (canTurn) {
+    const handling = car_steering.handling / 3
+    if (car.vx + car.vy > 0) car.rotation += handling * car.vx * car.vy
+    if (car.vx + car.vy < 0) car.rotation -= handling * 3 * car.vx * car.vy
 
-  if (canTurn && car.vx + car.vy > 0) car.rotation += handling * car.vx * car.vy
-  if (canTurn && car.vx + car.vy < 0)
-    car.rotation -= handling * 3 * car.vx * car.vy
+    // const drift = car.rotation + 0.8
+  }
 }
 
 function turnLeft(canTurn) {
-  const handling = car_steering.handling / 3
-  if (canTurn && car.vx + car.vy > 0) car.rotation -= handling * car.vx * car.vy
-  if (canTurn && car.vx + car.vy < 0)
-    car.rotation += handling * 3 * car.vx * car.vy
+  if (canTurn) {
+    const handling = car_steering.handling / 3
+    if (car.vx + car.vy > 0) car.rotation -= handling * car.vx * car.vy
+    if (car.vx + car.vy < 0) car.rotation += handling * 3 * car.vx * car.vy
+
+    //const drift = car.rotation + 0.8
+  }
 }
 
-function ifHandbrakingAddsValue(car) {
-  return car.handbraking ? 0.5 : 0
+function ifHandbraking(car) {
+  return car.handbraking ? 0.99 : 1
 }
