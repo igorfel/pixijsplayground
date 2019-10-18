@@ -1,4 +1,8 @@
 import Keyboard from "./engine/keyboard.js"
+import CarEngine from "./engine/physics/car/index.js"
+
+const carEngine = new CarEngine()
+console.log(carEngine.engine)
 
 let app = new PIXI.Application({
   width: 800,
@@ -22,6 +26,7 @@ let controller = {
   left: Keyboard("ArrowLeft"),
   handbrake: Keyboard(" ")
 }
+
 let car_engine = {
   topSpeed: 5,
   reverse: 2,
@@ -97,7 +102,7 @@ function start() {
   car.scale.set(0.1, 0.1)
   car.anchor.set(0.5)
 
-  car.x = 200
+  car.x = -20
   car.y = 200
   car.vx = 0
   car.vy = 0
