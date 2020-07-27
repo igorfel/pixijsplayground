@@ -4,13 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "http-server",
+    "start": "live-server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Igor Felipe",
   "license": "ISC",
   "dependencies": {
-    "ecstatic": "2.2.2",
-    "http-server": "0.9.0"
+    "live-server": "^1.2.1"
   }
 }
