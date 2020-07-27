@@ -1,4 +1,4 @@
-import Vector2 from '../../math/index.js'
+import { Vector2 } from '../../math/index.js'
 
 class Engine {
   constructor() {

@@ -1,5 +1,5 @@
-import Keyboard from "./engine/keyboard.js"
-import CarEngine from "./engine/physics/car/index.js"
+import Keyboard from "./src/GameEngine/keyboard.js"
+import CarEngine from "./src/GameEngine/physics/car/index.js"
 
 const carEngine = new CarEngine()
 console.log(carEngine.engine)
@@ -10,7 +10,7 @@ let app = new PIXI.Application({
   backgroundColor: 0x112233,
   resolution: window.devicePixelRatio || 1
 })
-document.body.appendChild(app.view)
+document.getElementById("main").appendChild(app.view)
 const car_sprite_path = "./src/assets/images/blue_car.json"
 const car_actions = {
   idle: "blue_car_idle.png",
@@ -102,8 +102,8 @@ function start() {
   car.scale.set(0.1, 0.1)
   car.anchor.set(0.5)
 
-  car.x = -20
-  car.y = 200
+  car.x = 400
+  car.y = 300
   car.vx = 0
   car.vy = 0
   app.stage.addChild(car)

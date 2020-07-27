@@ -1,6 +1,4 @@
-export default Keyboard
-
-function Keyboard(value) {
+export default function Keyboard(value) {
   let key = {}
   key.value = value
   key.isDown = false
