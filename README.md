@@ -10,5 +10,5 @@ After cloning the project run:
 To start the project on your local machine just run:
 
 ```
-  npm start
+  yarn start
 ```
