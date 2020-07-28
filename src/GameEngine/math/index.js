@@ -1,3 +1,13 @@
+export const Clamp = (value, min, max) => {
+  if(value < min) return min
+  if(value > max) return max
+  return value
+}
+
+export const Sign = (n) => {
+  return typeof n === 'number' ? n ? n < 0 ? -1 : 1 : n === n ? 0 : NaN : NaN;
+}
+
 export class Vector2 {
 
   constructor(x = 0, y = 0) {
@@ -7,6 +17,11 @@ export class Vector2 {
 
   magnitude() {
     return Math.sqrt(this.x * this.x + this.y * this.y)
+  }
+
+  normalize() {
+    const magnitude = Math.sqrt(this.x * this.x + this.y * this.y);
+    return new Vector2((this.x/magnitude) || 0, (this.y/magnitude) || 0)
   }
 
   add(b) {
@@ -23,6 +38,16 @@ export class Vector2 {
       return new Vector2(this.x * b.x, this.y * b.y)
   }
 
+  div(b) {
+    if (typeof b === 'number')
+      return new Vector2(this.x / b, this.y / b)
+    else
+      return new Vector2(this.x / b.x, this.y / b.y)
+  }
+
+  cross(b) {
+    return this.x * b.y - this.y * b.x
+  }
 }
 
 // vector2.prototype["+"] = function (operand) {

@@ -1,8 +1,10 @@
 import Keyboard from "./src/GameEngine/keyboard.js"
 import CarEngine from "./src/GameEngine/physics/car/index.js"
+import InputState from './src/GameEngine/physics/car/InputState.js'
+import BlueCarConfig from './src/assets/scripts/BlueCarConfig.js'
 
-const carEngine = new CarEngine()
-console.log(carEngine.engine)
+let carEngine = new CarEngine(BlueCarConfig)
+let inputs = new InputState()
 
 let app = new PIXI.Application({
   width: 800,
@@ -27,69 +29,65 @@ let controller = {
   handbrake: Keyboard(" ")
 }
 
-let car_engine = {
-  topSpeed: 5,
-  reverse: 2,
-  acceleration: 0.1,
-  deceleration: 0.025,
-  brakeForce: 0.05,
-  accelerate: false,
-  braking: false,
-  handbraking: false,
-  reversing: false
-}
-let car_steering = {
-  handling: 0.005,
-  turningRight: false,
-  turningLeft: false
-}
-
 app.loader.add(car_sprite_path).load(start)
 
 function setupController() {
   controller.up.press = () => {
     changeCarTexture(car_actions.lights)
-    car_engine.accelerate = true
+    // CarEngine
+    inputs.throttle = 1
   }
 
   controller.up.release = () => {
-    car_engine.accelerate = false
+    // CarEngine
+    inputs.throttle = 0
   }
 
   controller.down.press = () => {
-    car_engine.braking = true
-    car_engine.accelerate = false
+    // CarEngine
+    inputs.brake = 1
   }
 
   controller.down.release = () => {
-    car_engine.braking = false
-    if (controller.up.isDown) car_engine.accelerate = true
+    // CarEngine
+    inputs.brake = 0
+
+    if (controller.up.isDown) {
+      // CarEngine
+      inputs.throttle = 1
+    }
   }
 
   controller.right.press = () => {
-    car_steering.turningRight = true
-    car_steering.turningLeft = false
+    // CarEngine
+    inputs.right = 1
+    inputs.left = 0
   }
 
   controller.right.release = () => {
-    car_steering.turningRight = false
+    // CarEngine
+    inputs.right = 0
   }
 
   controller.left.press = () => {
-    car_steering.turningLeft = true
-    car_steering.turningRight = false
+    // CarEngine
+    inputs.right = 0
+    inputs.left = 1
   }
 
   controller.left.release = () => {
-    car_steering.turningLeft = false
+    // CarEngine
+    inputs.left = 0
   }
 
   controller.handbrake.press = () => {
-    car_engine.handbraking = true
+    // CarEngine
+    inputs.ebrake = 1
   }
 
   controller.handbrake.release = () => {
-    car_engine.handbraking = false
+    // CarEngine
+    inputs.ebrake = 0
   }
 }
 
@@ -99,7 +97,7 @@ function changeCarTexture(newTexture) {
 
 function start() {
   car = PIXI.Sprite.from(car_actions.lights)
-  car.scale.set(0.1, 0.1)
+  car.scale.set(0.5, 0.5)
   car.anchor.set(0.5)
 
   car.x = 400
@@ -109,7 +107,10 @@ function start() {
   app.stage.addChild(car)
 
   setupController()
-
+  
+  carEngine.setInputs(inputs)
+  console.log(carEngine.config)
+  
   state = play
   app.ticker.add(delta => update(delta))
 }
@@ -119,40 +120,42 @@ function update(delta) {
 }
 
 function play(delta) {
-  if (car.rotation > Math.PI * 2 || car.rotation < -Math.PI * 2)
-    car.rotation = 0
-  const rot = car.rotation + ifHandbraking(car_engine)
-  console.log(
-    car_engine.handbraking,
-    car.rotation,
-    car.rotation * ifHandbraking(car_engine)
-  )
-  car.x += car.vx * Math.cos(rot) * delta
-  car.y += car.vy * Math.sin(rot) * delta
+  // if (car.rotation > Math.PI * 2 || car.rotation < -Math.PI * 2)
+  //   car.rotation = 0
+  // const rot = car.rotation * ifHandbraking(car_engine)
+
+  carEngine.update(delta)
+  // car.vx = carEngine.velocity.x
+  // car.vy = carEngine.velocity.y
+  car.rotation = carEngine.heading
+  car.x += carEngine.velocity.x/10 * delta
+  car.y += carEngine.velocity.y/10 * delta
+  // car.x += car.vx * Math.cos(rot) * delta
+  // car.y += car.vy * Math.sin(rot) * delta
+
+  // carEngineAccelerate(car_engine.accelerate && !car_engine.braking)
+  // carEngineDecelerate(!car_engine.accelerate, car_engine.braking)
+  // carEngineReverse(car.vx <= 0 && car_engine.braking)
+
+  // if (car.vx != 0 || car.vy != 0) {
+  //   turnRight(car_steering.turningRight)
+  //   turnLeft(car_steering.turningLeft)
+  // }
 
   loopPosition(car, app.renderer.screen)
-  carEngineAccelerate(car_engine.accelerate && !car_engine.braking)
-  carEngineDecelerate(!car_engine.accelerate, car_engine.braking)
-  carEngineReverse(car.vx <= 0 && car_engine.braking)
-
-  if (car.vx != 0 && car.vy != 0) {
-    turnRight(car_steering.turningRight)
-    turnLeft(car_steering.turningLeft)
-  }
-  // console.log(car.vx, car_engine)
 }
 
 function loopPosition(car, screen) {
-  if (car.x > screen.width + car.width) car.x = 0
-  if (car.y > screen.height + car.height) car.y = 0
-  if (car.x < 0 - car.width) car.x = screen.width
-  if (car.y < 0 - car.height) car.y = screen.height
+  if (car.x > screen.width + car.width) car.x = -car.width
+  if (car.y > screen.height + car.height) car.y = -car.height
+  if (car.x < 0 - car.width) car.x = screen.width + car.width/2
+  if (car.y < 0 - car.height) car.y = screen.height + car.height/2
 }
 
 function carEngineAccelerate(accelerate) {
   if (accelerate) {
-    if (car.vx < car_engine.topSpeed) car.vx += car_engine.acceleration
-    if (car.vy < car_engine.topSpeed) car.vy += car_engine.acceleration
+    if(car.vx < 5) car.vx += 5
+    if(car.vy < 5) car.vy += 5
   }
 }
 
@@ -183,6 +186,7 @@ function carEngineReverse(accelerate) {
 function turnRight(canTurn) {
   if (canTurn) {
     const handling = car_steering.handling / 3
+
     if (car.vx + car.vy > 0) car.rotation += handling * car.vx * car.vy
     if (car.vx + car.vy < 0) car.rotation -= handling * 3 * car.vx * car.vy
 
@@ -201,5 +205,5 @@ function turnLeft(canTurn) {
 }
 
 function ifHandbraking(car) {
-  return car.handbraking ? 0.9 : 0
+  return car.handbraking ? 1.5 : 1
 }
