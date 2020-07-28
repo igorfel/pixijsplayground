@@ -1,7 +1,5 @@
-export const Clamp = (value, min, max) => {
-  if(value < min) return min
-  if(value > max) return max
-  return value
+export const Clamp = (n, min, max) => {
+  return Math.min(Math.max(n, min), max);
 }
 
 export const Sign = (n) => {

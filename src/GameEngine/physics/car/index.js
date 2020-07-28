@@ -77,7 +77,7 @@ class Car {
     var yawSpeedRear = -cfg.cgToRearAxle * this.yawRate;
 
     // Calculate slip angles for front and rear wheels (a.k.a. alpha)
-    var slipAngleFront = Math.atan2(this.velocity_c.y + yawSpeedFront, Math.abs(this.velocity_c.x)) - Sign(this.velocity_c.x) * this.steerAngle;
+    var slipAngleFront = Math.atan2(this.velocity_c.y + yawSpeedFront, Math.abs(this.velocity_c.x)) - Sign(this.velocity_c.x) * -this.steerAngle;
     var slipAngleRear  = Math.atan2(this.velocity_c.y + yawSpeedRear,  Math.abs(this.velocity_c.x));
 
     var tireGripFront = cfg.tireGrip;
@@ -127,25 +127,12 @@ class Car {
     }
 
     var angularAccel = angularTorque / this.inertia;
-
     this.yawRate += angularAccel * dt;
     this.heading += this.yawRate * dt;
 
     //  finally we can update position
     this.position.x += this.velocity.x * dt;
     this.position.y += this.velocity.y * dt;
-
-    //  Display some data
-    // this.stats.clear();  // clear this every tick otherwise it'll fill up fast
-    // this.stats.add('speed', this.velocity_c.x * 3600 / 1000 );  // km/h
-    // this.stats.add('accleration', this.accel_c.x);
-    // this.stats.add('yawRate', this.yawRate);
-    // this.stats.add('weightFront', axleWeightFront);
-    // this.stats.add('weightRear', axleWeightRear);
-    // this.stats.add('slipAngleFront', slipAngleFront);
-    // this.stats.add('slipAngleRear', slipAngleRear);
-    // this.stats.add('frictionFront', frictionForceFront_cy);
-    // this.stats.add('frictionRear', frictionForceRear_cy);
   }
 
   applySmoothSteer (steerInput, dt) {
@@ -154,18 +141,18 @@ class Car {
     if (Math.abs(steerInput) > 0.001)
     {
       //  Move toward steering input
-      steer = Clamp(this.steer + steerInput * dt * 2.0, -1.0, 1.0); // -inp.right, inp.left);
+      steer = Clamp(this.steer + steerInput * dt * 4.0, -1.0, 1.0);
     }
     else
     {
       //  No steer input - move toward centre (0)
       if (this.steer > 0)
       {
-        steer = Math.max(this.steer - dt * 1.0, 0);
+        steer = Math.max(this.steer - dt * 2.0, 0);
       }
       else if (this.steer < 0)
       {
-        steer = Math.min(this.steer + dt * 1.0, 0);
+        steer = Math.min(this.steer + dt * 2.0, 0);
       }
     }
 
@@ -179,7 +166,7 @@ class Car {
   };
 
   update (delta) {
-    var dt = delta;  // delta T in seconds
+    var dt = delta/100;  // delta T in seconds
 
     this.throttle = this.inputs.throttle;
     this.brake = this.inputs.brake;
