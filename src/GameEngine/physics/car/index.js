@@ -7,7 +7,7 @@ class Car {
     opts = opts || {};
 
     //  Car state variables
-    this.heading = opts.heading || 0.0;  // angle car is pointed at (radians)
+    this.heading = opts.heading || 1;  // angle car is pointed at (radians)
     this.position = new Vector2(opts.x, opts.y);  // metres in world coords
     this.velocity = new Vector2();  // m/s in world coords
     this.velocity_c = new Vector2();  // m/s in local car coords (x is forward y is sideways)
@@ -77,7 +77,7 @@ class Car {
     var yawSpeedRear = -cfg.cgToRearAxle * this.yawRate;
 
     // Calculate slip angles for front and rear wheels (a.k.a. alpha)
-    var slipAngleFront = Math.atan2(this.velocity_c.y + yawSpeedFront, Math.abs(this.velocity_c.x)) - Sign(this.velocity_c.x) * -this.steerAngle;
+    var slipAngleFront = Math.atan2(this.velocity_c.y + yawSpeedFront, Math.abs(this.velocity_c.x)) - Sign(this.velocity_c.x) * this.steerAngle;
     var slipAngleRear  = Math.atan2(this.velocity_c.y + yawSpeedRear,  Math.abs(this.velocity_c.x));
 
     var tireGripFront = cfg.tireGrip;
@@ -129,6 +129,7 @@ class Car {
     var angularAccel = angularTorque / this.inertia;
     this.yawRate += angularAccel * dt;
     this.heading += this.yawRate * dt;
+    console.log((180/Math.PI) * this.heading)
 
     //  finally we can update position
     this.position.x += this.velocity.x * dt;

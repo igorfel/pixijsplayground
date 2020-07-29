@@ -33,7 +33,7 @@ app.loader.add(car_sprite_path).load(start)
 
 function setupController() {
   controller.up.press = () => {
-    changeCarTexture(car_actions.lights)
+    // changeCarTexture(car_actions.lights)
     // CarEngine
     inputs.throttle = 1
   }
@@ -44,14 +44,14 @@ function setupController() {
   }
 
   controller.down.press = () => {
-    changeCarTexture(car_actions.break_lights)
+    // changeCarTexture(car_actions.break_lights)
 
     // CarEngine
     inputs.brake = 1
   }
 
   controller.down.release = () => {
-    changeCarTexture(car_actions.lights)
+    // changeCarTexture(car_actions.lights)
 
     // CarEngine
     inputs.brake = 0
@@ -101,6 +101,7 @@ function changeCarTexture(newTexture) {
 
 function start() {
   car = PIXI.Sprite.from(car_actions.lights)
+  // car = PIXI.Sprite.from('./src/assets/images/sprites/blue_car_lights_vr.png')
   car.scale.set(0.1, 0.1)
   car.anchor.set(0.5)
 
