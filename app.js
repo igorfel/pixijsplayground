@@ -100,6 +100,7 @@ function changeCarTexture(newTexture) {
 }
 
 function start() {
+  var graphics = new PIXI.Graphics();
   car = PIXI.Sprite.from(car_actions.lights)
   // car = PIXI.Sprite.from('./src/assets/images/sprites/blue_car_lights_vr.png')
   car.scale.set(0.1, 0.1)
@@ -109,7 +110,35 @@ function start() {
   car.y = 300
   car.vx = 0
   car.vy = 0
+
   app.stage.addChild(car)
+
+  graphics.beginFill(0x9b59b6); // Purple
+  // Draw a rectangle
+  graphics.drawRect(240, 150, 20, 1); // drawRect(x, y, width, height)
+  graphics.endFill();
+
+  graphics.beginFill(0x9b59b6); // Purple
+  // Draw a rectangle
+  graphics.drawRect(400, 300, 25, 8); // drawRect(x, y, width, height)
+  graphics.endFill();
+
+  graphics.beginFill(0x9ba5c3);
+  // Draw a rectangle
+  graphics.drawRect(375, 300, 25, 8); // drawRect(x, y, width, height)
+  graphics.endFill();
+
+  graphics.beginFill(0x9333b6); // Purple
+  // Draw a rectangle
+  graphics.drawRect(400, 290, 16, 8); // drawRect(x, y, width, height)
+  graphics.endFill();
+
+  graphics.beginFill(0x9777c3);
+  // Draw a rectangle
+  graphics.drawRect(384, 290, 16, 8); // drawRect(x, y, width, height)
+  graphics.endFill();
+
+  app.stage.addChild(graphics)
 
   setupController()
   
@@ -125,6 +154,8 @@ function update(delta) {
 }
 
 function play(delta) {
+  
+
   carEngine.update(delta)
 
   car.rotation = carEngine.heading
